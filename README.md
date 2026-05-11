@@ -28,6 +28,7 @@ The AI Hub page reports that the full dataset contains both video and image data
 
 ## Project Structure
 
+```text
 Traffic_Accident_Fault_Ratio_Service/
 ├── README.md
 ├── requirements.txt
@@ -48,11 +49,11 @@ Traffic_Accident_Fault_Ratio_Service/
 │   │   ├── raw/
 │   │   └── processed/
 │   └── detection_outputs/
-
----
+```
 
 ## Expected Data Structure
 
+```text
 classification/video_data/raw/
 ├── VS_차대차_영상_직선도로/
 │   ├── *.mp4
@@ -60,7 +61,9 @@ classification/video_data/raw/
 └── VL_차대차_영상_직선도로/
     ├── *.json
     └── ...
+```
 
+```text
 detect/img_data/raw/
 ├── VS_차대차_이미지_직선도로/
 │   ├── *.png
@@ -68,12 +71,13 @@ detect/img_data/raw/
 └── VL_차대차_이미지_직선도로/
     ├── *.json
     └── ...
-
----
+```
 
 ## Installation
 
+```text
 python -m venv venv
 source venv/bin/activate
 pip install --upgrade pip
 pip install -r requirements.txt
+```
