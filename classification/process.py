@@ -4,11 +4,7 @@ from pathlib import Path
 from typing import Dict, List, Optional
 
 
-# =========================
-# Config
-# =========================
-
-BASE_DIR = Path("/home/junhyung/Documents/vscode/car_accident/2026-1-semester-CV-project/classification/video_data")
+BASE_DIR = Path("your path")
 
 RAW_DIR = BASE_DIR / "raw"
 PROCESSED_DIR = BASE_DIR / "processed"
@@ -26,9 +22,6 @@ RANDOM_SEED = 42
 VIDEO_EXTENSIONS = [".mp4", ".avi", ".mov", ".mkv"]
 
 
-# =========================
-# Utility functions
-# =========================
 
 def load_json(json_path: Path) -> Dict:
     with open(json_path, "r", encoding="utf-8") as f:
@@ -57,12 +50,6 @@ def find_all_videos(video_dirs: List[Path]) -> List[Path]:
 
 
 def find_all_jsons(label_dirs: List[Path]) -> Dict[str, Path]:
-    """
-    json 파일들을 stem 기준으로 index화한다.
-    예:
-      bb_1_140725_two-wheeled-vehicle_226_20661.json
-      -> key: bb_1_140725_two-wheeled-vehicle_226_20661
-    """
     json_index = {}
 
     for label_dir in label_dirs:
@@ -84,9 +71,6 @@ def find_all_jsons(label_dirs: List[Path]) -> Dict[str, Path]:
 
 
 def match_video_and_json(video_paths: List[Path], json_index: Dict[str, Path]) -> List[Dict]:
-    """
-    video 파일명과 json 파일명을 stem 기준으로 매칭한다.
-    """
     samples = []
     missing_jsons = []
 
