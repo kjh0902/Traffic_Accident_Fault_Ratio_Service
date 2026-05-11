@@ -1,15 +1,9 @@
-# detect/process.py
-
 import json
 import random
 from pathlib import Path
 
 from PIL import Image
 
-
-# =========================================================
-# Config
-# =========================================================
 
 configs = {
     "train_ratio": 0.8,
@@ -19,11 +13,7 @@ configs = {
 }
 
 
-# =========================================================
-# 경로 설정
-# =========================================================
-
-PROJECT_ROOT = Path("/home/junhyung/Documents/vscode/car_accident/2026-1-semester-CV-project")
+PROJECT_ROOT = Path("your path")
 
 DETECT_ROOT = PROJECT_ROOT / "detect"
 
@@ -48,9 +38,6 @@ CLASS_MAP_PATH = PROCESSED_ROOT / "class_map.json"
 IDX_TO_CLASS_PATH = PROCESSED_ROOT / "idx_to_class.json"
 
 
-# =========================================================
-# 기본 유틸
-# =========================================================
 
 def ensure_dirs():
     PROCESSED_ROOT.mkdir(parents=True, exist_ok=True)
@@ -91,25 +78,8 @@ def print_paths():
     print("TEST_COCO_PATH:", TEST_COCO_PATH)
 
 
-# =========================================================
-# annotation parsing
-# =========================================================
 
 def parse_annotation(ann):
-    """
-    annotation json에서 object 정보를 파싱한다.
-
-    현재 가정:
-      ann["objects"] 안에 object들이 있고,
-      각 object는 bbox, category를 가진다.
-
-    원본 bbox:
-      [x, y, w, h]
-
-    반환 bbox:
-      [x1, y1, x2, y2]
-    """
-
     objs = []
 
     for obj in ann.get("objects", []):
@@ -137,29 +107,16 @@ def parse_annotation(ann):
     return objs
 
 
-# =========================================================
-# 이미지-라벨 매칭
-# =========================================================
 
 def find_json_for_image(img_path, image_dir, label_dir):
-    """
-    이미지에 대응하는 json 경로를 찾는다.
-
-    1. label_dir / 이미지파일명.json
-    2. label_dir 내부에서 이미지 상대경로 유지 후 .json
-    3. 하위 폴더 전체에서 stem 기준 검색
-    """
-
     img_path = Path(img_path)
     image_dir = Path(image_dir)
     label_dir = Path(label_dir)
 
-    # 1) label_dir / stem.json
     candidate1 = label_dir / f"{img_path.stem}.json"
     if candidate1.exists():
         return candidate1
 
-    # 2) 상대경로 유지
     try:
         rel = img_path.relative_to(image_dir).with_suffix(".json")
         candidate2 = label_dir / rel
@@ -168,7 +125,6 @@ def find_json_for_image(img_path, image_dir, label_dir):
     except Exception:
         pass
 
-    # 3) label_dir 전체에서 stem.json 검색
     candidates = list(label_dir.rglob(f"{img_path.stem}.json"))
     if len(candidates) > 0:
         return candidates[0]
@@ -176,9 +132,6 @@ def find_json_for_image(img_path, image_dir, label_dir):
     return None
 
 
-# =========================================================
-# sample 생성
-# =========================================================
 
 def build_samples(image_dir, label_dir, image_exts=(".png", ".jpg", ".jpeg", ".bmp")):
     image_dir = Path(image_dir)
@@ -251,9 +204,6 @@ def build_samples(image_dir, label_dir, image_exts=(".png", ".jpg", ".jpeg", ".b
     return samples, info
 
 
-# =========================================================
-# class map 생성
-# =========================================================
 
 def build_class_map(samples):
     label_names = set()
@@ -267,7 +217,6 @@ def build_class_map(samples):
 
     label_names = sorted(label_names)
 
-    # Faster R-CNN에서 background가 0이므로 class id는 1부터 시작
     class_map = {
         name: idx + 1
         for idx, name in enumerate(label_names)
@@ -281,9 +230,6 @@ def build_class_map(samples):
     return class_map, idx_to_class
 
 
-# =========================================================
-# train / val / test split
-# =========================================================
 
 def split_samples(
     samples,
@@ -333,9 +279,6 @@ def split_samples(
     return train_samples, val_samples, test_samples
 
 
-# =========================================================
-# COCO 변환
-# =========================================================
 
 def clip_box_xyxy(box, width, height):
     x1, y1, x2, y2 = box
@@ -424,9 +367,6 @@ def convert_to_coco(samples, class_map, output_json):
     }
 
 
-# =========================================================
-# main
-# =========================================================
 
 def main():
     ensure_dirs()
