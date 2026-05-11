@@ -21,8 +21,8 @@ RAW_ROOT = DETECT_ROOT / "img_data" / "raw"
 PROCESSED_ROOT = DETECT_ROOT / "img_data" / "processed"
 OUTPUT_ROOT = DETECT_ROOT / "detection_outputs"
 
-IMAGE_DIR = RAW_ROOT / "VS_차대차_이미지_T자형교차로"
-LABEL_DIR = RAW_ROOT / "VL_차대차_이미지_T자형교차로"
+IMAGE_DIR = RAW_ROOT / "VS_차대차_이미지_직선도로"
+LABEL_DIR = RAW_ROOT / "VL_차대차_이미지_직선도로"
 
 TRAIN_SAMPLES_PATH = PROCESSED_ROOT / "train_samples.json"
 VAL_SAMPLES_PATH = PROCESSED_ROOT / "val_samples.json"
