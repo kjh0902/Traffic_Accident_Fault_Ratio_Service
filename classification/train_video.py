@@ -1,5 +1,3 @@
-# train_video_classifier.py
-
 import csv
 import json
 import time
@@ -18,11 +16,9 @@ from tqdm import tqdm
 from torchvision.models.video import r2plus1d_18, R2Plus1D_18_Weights
 
 
-# =========================
-# Paths
-# =========================
 
-PROJECT_ROOT = Path("/home/junhyung/Documents/vscode/car_accident/2026-1-semester-CV-project")
+
+PROJECT_ROOT = Path("your path")
 
 VIDEO_PROCESSED_DIR = PROJECT_ROOT / "classification" / "video_data" / "processed"
 
@@ -33,17 +29,11 @@ DEFAULT_TEST_JSON = VIDEO_PROCESSED_DIR / "test.json"
 OUTPUT_DIR = PROJECT_ROOT / "classification" / "video_classification_outputs"
 
 
-# =========================
-# ImageNet normalization
-# =========================
 
 IMAGENET_MEAN = [0.485, 0.456, 0.406]
 IMAGENET_STD = [0.229, 0.224, 0.225]
 
 
-# =========================
-# Args
-# =========================
 
 def parse_args():
     parser = argparse.ArgumentParser()
@@ -82,9 +72,6 @@ def parse_args():
     return parser.parse_args()
 
 
-# =========================
-# Utils
-# =========================
 
 def set_seed(seed: int):
     random.seed(seed)
@@ -172,9 +159,6 @@ def attach_label_indices(data, label_keys, label_mappings):
     return samples
 
 
-# =========================
-# Dataset
-# =========================
 
 class AccidentVideoDataset(Dataset):
     def __init__(
@@ -276,9 +260,6 @@ def full_video_collate_fn(batch):
     return videos, labels
 
 
-# =========================
-# Model
-# =========================
 
 class R2Plus1DMultiHeadClassifier(nn.Module):
     def __init__(self, num_classes_dict: Dict[str, int], freeze_backbone=True):
@@ -313,9 +294,6 @@ class R2Plus1DMultiHeadClassifier(nn.Module):
         return outputs
 
 
-# =========================
-# Train / Eval
-# =========================
 
 def move_labels_to_device(labels, device):
     return {key: value.to(device, non_blocking=True) for key, value in labels.items()}
@@ -470,9 +448,6 @@ def evaluate(model, loader, criterion, device, label_keys, split_name="val"):
     return avg_loss, avg_acc, mean_acc
 
 
-# =========================
-# Save / Load
-# =========================
 
 def save_checkpoint(
     path,
@@ -554,9 +529,6 @@ def save_curves(output_dir, history, label_keys):
     plt.close()
 
 
-# =========================
-# Main
-# =========================
 
 def main():
     args = parse_args()
