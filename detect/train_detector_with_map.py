@@ -1,5 +1,3 @@
-# detect/train_detector.py
-
 import json
 import random
 from pathlib import Path
@@ -17,10 +15,6 @@ from torchvision.models.detection.faster_rcnn import FastRCNNPredictor
 from torchmetrics.detection.mean_ap import MeanAveragePrecision
 
 
-# =========================================================
-# Config
-# =========================================================
-
 configs = {
     "experiment_name": "faster_rcnn_baseline",
     "batch_size": 8,
@@ -36,11 +30,7 @@ configs = {
 }
 
 
-# =========================================================
-# Paths
-# =========================================================
-
-PROJECT_ROOT = Path("/home/junhyung/Documents/vscode/car_accident/2026-1-semester-CV-project")
+PROJECT_ROOT = Path("your path")
 
 DETECT_ROOT = PROJECT_ROOT / "detect"
 PROCESSED_ROOT = DETECT_ROOT / "img_data" / "processed"
@@ -75,9 +65,7 @@ def print_paths():
     print("TEST_COCO exists?", TEST_COCO_PATH.exists())
 
 
-# =========================================================
-# Dataset
-# =========================================================
+
 
 class CocoDetectionDataset(Dataset):
     def __init__(self, coco_json_path, project_root, transforms=None):
@@ -186,18 +174,8 @@ def collate_fn(batch):
     return tuple(zip(*batch))
 
 
-# =========================================================
-# Model
-# =========================================================
 
 def get_model(num_classes):
-    """
-    num_classes는 background 포함 개수.
-    예:
-      실제 클래스가 2개면 num_classes = 3
-      background 0, vehicle 1, traffic-light-etc 2
-    """
-
     model = fasterrcnn_resnet50_fpn(weights="DEFAULT")
 
     in_features = model.roi_heads.box_predictor.cls_score.in_features
@@ -210,9 +188,6 @@ def get_model(num_classes):
     return model
 
 
-# =========================================================
-# Train / Eval
-# =========================================================
 
 def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=100):
     model.train()
@@ -263,11 +238,6 @@ def train_one_epoch(model, optimizer, data_loader, device, epoch, print_freq=100
 
 @torch.no_grad()
 def evaluate_loss(model, data_loader, device):
-    """
-    torchvision detection model은 eval mode에서는 loss가 아니라 prediction을 반환함.
-    그래서 validation/test loss를 계산하려면 model.train() 상태로 두고 no_grad()를 사용해야 함.
-    """
-
     was_training = model.training
     model.train()
 
@@ -302,16 +272,6 @@ def evaluate_loss(model, data_loader, device):
 
 @torch.no_grad()
 def evaluate_map(model, data_loader, device):
-    """
-    COCO-style bbox mAP 계산.
-
-    반환값 주요 항목:
-      map     : AP@[IoU=0.50:0.95]
-      map_50  : AP@IoU=0.50
-      map_75  : AP@IoU=0.75
-      mar_100 : AR@maxDets=100
-    """
-
     model.eval()
     metric = MeanAveragePrecision(iou_type="bbox")
 
@@ -352,9 +312,6 @@ def evaluate_map(model, data_loader, device):
     return result
 
 
-# =========================================================
-# Utils
-# =========================================================
 
 def set_seed(seed=42):
     random.seed(seed)
@@ -428,10 +385,6 @@ def plot_metrics(history, save_path):
     plt.savefig(save_path.parent / "lr_curve.png", dpi=200, bbox_inches="tight")
     plt.close()
 
-
-# =========================================================
-# Main
-# =========================================================
 
 def main():
     set_seed(configs["seed"])
@@ -615,7 +568,7 @@ def main():
         history["lr"].append(current_lr)
 
         save_json(history, work_dir / "metrics_history.json")
-        save_json(history, work_dir / "loss_history.json")  # 기존 그래프 코드 호환용
+        save_json(history, work_dir / "loss_history.json")  
         plot_metrics(history, work_dir / "curves.png")
 
         print(
