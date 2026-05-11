@@ -16,13 +16,11 @@ The final goal of this project is to support traffic accident fault ratio assess
 
 This project uses the AI Hub Traffic Accident Video Dataset.
 
-Dataset source: AI Hub - 교통사고 영상 데이터
+Dataset source: AI Hub - 교통사고 영상 데이터 (https://www.aihub.or.kr/aihubdata/data/view.do?currMenu=115&topMenu=100&aihubDataSe=data&dataSetSn=597)
 
-The dataset contains traffic accident videos and images for fault ratio measurement and evaluation. According to AI Hub, the dataset includes video and image data, JSON annotations, image bounding-box labels, and accident-related classification labels. The dataset was built for developing AI models that can support traffic accident fault ratio measurement and evaluation. :contentReference[oaicite:0]{index=0}
+The dataset contains traffic accident videos and images for fault ratio measurement and evaluation. According to AI Hub, the dataset includes video and image data, JSON annotations, image bounding-box labels, and accident-related classification labels. The dataset was built for developing AI models that can support traffic accident fault ratio measurement and evaluation. 
 
 In this repository, only the following subset is used: 차대차_직선도로
-
-The AI Hub page reports that the full dataset contains both video and image data, with 21,895 videos and 3,284,250 images in total. For the 차대차 직선 도로 category, it reports 9,089 videos and 1,363,350 bounding-box images.
 
 ---
 
