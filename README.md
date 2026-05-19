@@ -30,7 +30,7 @@ traffic_accident/
 
 ```powershell
 pip install -r requirements.txt
-python app.py --device cuda:0 --share
+python app.py 
 ```
 
 기본 device는 `cuda:0`입니다. GPU 서버에서 그대로 실행하면 되고, 로컬에서 구조만 확인할 때는 `--device cpu`로 바꿔 실행할 수 있습니다.
