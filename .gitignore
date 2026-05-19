@@ -1,8 +1,0 @@
-# checkpoint
-*.pth
-*.pt
-*.ckpt
-
-# data
-detect/img_data/
-classification/video_data/
